@@ -200,6 +200,7 @@ no server, and no paid tool dependency.
 **Priyanka Lenka**
 📧 priyankalenkabbs@gmail.com
 🗓️ 2025
+[System Overview]( "D:\PROJECTS\Crime_Analysis_Project\System Overview.png")
 
 > *This project uses dummy data modeled 
 > records and was built for learning and portfolio purposes.*
