@@ -187,8 +187,8 @@ no server, and no paid tool dependency.
 
 | Phase | What was built | Time |
 |---|---|---|
-| Training Project | Power BI dashboard + 2 months of detailed documentation | 2024 |
-| CRU-IAS v1 | Python data pipeline + HTML dashboard + full technical documentation | 2025 |
+| Training Project | Power BI dashboard + 2 months of detailed documentation | Aug 2025 |
+| CRU-IAS v1 | Python data pipeline + HTML dashboard + full technical documentation | Feb 2025 |
 
 ---
 
