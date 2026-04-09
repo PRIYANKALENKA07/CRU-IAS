@@ -1,88 +1,200 @@
 # CRU-IAS — Crime Response Unit Intelligence & Analytics System
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat&logo=python)
-![Pandas](https://img.shields.io/badge/Pandas-Data%20Pipeline-lightgrey?style=flat&logo=pandas)
-![Status](https://img.shields.io/badge/Status-In%20Progress-orange?style=flat)
-![License](https://img.shields.io/badge/License-Academic-green?style=flat)
-
-> A end-to-end crime data intelligence system built on FIR-level data from the Crime Response Unit (CRU) — covering data pipeline, analytics dashboard, and predictive modeling.
+> An end-to-end crime data intelligence system built on FIR-level data —
+> covering data pipeline, analytics, and an interactive browser-based dashboard.
 
 ---
 
-## 🗂️ Project Overview
+## Project Journey
 
-The **Crime Response Unit (CRU)** collects FIR (First Information Report) level data across **45 districts and 50 police stations** spanning **2020–2025** (~5 years, 2,11,863 cases).
+This project started as a **Power BI dashboard** built during a training
+program on Karnataka Government crime data. After completing 2 months of
+detailed documentation for the Power BI dashboard, I decided to take it
+further — rebuilding the entire system from scratch with a custom Python
+data pipeline and a self-built HTML dashboard, removing the dependency on
+any paid BI tool.
 
-This system transforms that raw data into actionable intelligence through three phases:
-
-| Phase | Description | Status |
-|-------|-------------|--------|
-| **Phase 1** | Data Pipeline — clean, join & aggregate raw tables | 🔄 In Progress |
-| **Phase 2** | Analytics Dashboard — interactive HTML system with charts | ⏳ Planned |
-| **Phase 3** | Predictive Model — ML-based crime forecasting system | ⏳ Planned |
+The result is a fully independent, open-source intelligence system that
+runs entirely without Power BI, Tableau, or any backend server.
 
 ---
 
-## 📁 Repository Structure
+## What is CRU-IAS?
+
+CRU-IAS (Crime Response Unit — Intelligence & Analytics System) is a
+personal data engineering and analytics project built on dummy FIR
+(First Information Report) data modeled after Karnataka Government
+crime records.
+
+The system takes 7 raw data tables, cleans and joins them using Python,
+and produces a single aggregated summary that powers an interactive
+HTML dashboard — where you can select a police station and year and
+instantly see total cases, disposed cases, and pending cases with charts.
+
+---
+
+## The Problem It Solves
+
+Before this system, answering a simple question like:
+
+> *"How many cyber crime cases are pending in Ashoknagar PS this year?"*
+
+required manually joining multiple tables and writing custom queries
+every single time. Nobody could answer that question quickly.
+
+CRU-IAS does that automatically — in under two seconds.
+
+---
+
+## Key Finding
+
+> **91% of cases in this dataset are still pending.**
+
+This system helps police leadership spot which stations have the highest
+backlog, which crime types are piling up, and where resources need to go.
+
+---
+
+## Dataset
+
+| Detail | Value |
+|---|---|
+| Source | Karnataka Government (Dummy Data) |
+| Time Period | 2020 – 2025 |
+| Total Raw FIRs | 2,11,863 cases |
+| Districts Covered | 45 |
+| Police Stations | 50 |
+| Raw Tables | 7 |
+| Unique FIRs after cleaning | 1,40,585 |
+| Final Dashboard Output | 9,453 aggregated rows |
+
+**Raw tables included:**
+Crime, Dispose, Act_Section, Accused, Chargesheet, PS_Unit, Victim
+
+---
+
+## Tech Stack
+
+| Layer | Tools |
+|---|---|
+| Data Pipeline | Python, Pandas, NumPy, Jupyter Notebook |
+| Dashboard | HTML, CSS, JavaScript, Chart.js, SheetJS |
+| Version Control | Git, GitHub |
+
+---
+
+## Project Structure
 CRU-IAS/
-├── data/                        # Raw source tables (CSV)
-│   ├── crime.csv                # Core FIR data (2,11,863 records)
-│   ├── dispose.csv              # Case disposal records (17,660 records)
-│   ├── act_section.csv          # Crime type / law sections (3,49,029 records)
-│   └── ps_unit.csv              # Police station master data (1,856 records)
+│
 ├── notebooks/
-│   └── 01_data_pipeline.ipynb  # Phase 1 — data pipeline & analysis
-├── output/
-│   └── cru_aggregated.csv      # Final aggregated output (pipeline output)
-├── docs/
-│   └── CRU_Analytics_Documentation.docx  # Power BI dashboard documentation
-├── .gitignore
+│   └── 01_data_pipeline.ipynb    ← Full pipeline: clean, join, aggregate
+│
+├── data/
+│   └── cru_aggregated.csv        ← Final pipeline output (dashboard input)
+│
+├── dashboard/
+│   └── index.html                ← Self-contained analytics dashboard
+│
 └── README.md
 ---
 
-## 📊 Data Sources
+## Phase 1 — Data Pipeline (Python + Pandas)
 
-| Table | Records | Columns | Description |
-|-------|---------|---------|-------------|
-| `crime.csv` | 2,11,863 | 18 | Core FIR details — location, date, crime type, stage |
-| `dispose.csv` | 17,660 | 5 | Case disposal info — disposal date and type |
-| `act_section.csv` | 3,49,029 | 6 | Law sections — crime classification and description |
-| `ps_unit.csv` | 1,856 | 4 | Police station master — names and coordinates |
+The pipeline transforms 7 raw CSV tables into one clean aggregated file.
 
-**Time Range:** January 2020 – January 2025  
-**Geography:** 45 Districts, 50 Police Stations
+**Steps:**
 
----
-
-## ⚙️ Phase 1 — Data Pipeline
-
-The notebook `01_data_pipeline.ipynb` performs the following steps:
-
-1. **Load & Clean** — load all raw tables, drop junk columns, standardize join keys
-2. **Join Dispose** — flag each FIR as `Disposed` or `Pending` based on `Dispose_Date`
-3. **Join Act_Section** — bring in `Act_Description` (crime type) for each FIR
-4. **Build Master Table** — one clean row per FIR with all key fields
-5. **Aggregate** — group by `UnitName + Month + Act_Description`, count cases
-6. **Export** — save `cru_aggregated.csv` to `output/`
+1. Load all 7 raw CSV tables into Pandas DataFrames
+2. Drop junk columns (`Unnamed: 18`, `Unnamed: 19`), standardize column
+   names, convert date columns to `datetime64` format
+3. Extract `FIR_Year`, `FIR_Month`, `FIR_Month_Name` from `FIR_Date`
+4. Create composite key `Fir_id + Unit_id` across Crime, Dispose, and
+   Act tables to uniquely identify each FIR at each police station
+5. Deduplicate Crime table from **2,11,863 rows → 1,40,585 unique FIRs**
+6. Left join Dispose table → flag each FIR as `Is_Disposed` or
+   `Is_Pending` based on whether a disposal date exists
+7. Join primary Act Description per FIR → one crime type label per case
+8. Aggregate by Police Station + Year + Month + Crime Type → compute
+   Total Cases, Disposed Cases, Pending Cases, Pending Percentage
+9. Fix act name inconsistencies (whitespace, `&` vs `and`, double spaces)
+10. Export final `cru_aggregated.csv` — **9,453 rows, 100 unique act types**
 
 ---
 
-## 🛠️ Tech Stack
+## Phase 2 — Analytics Dashboard (HTML + JavaScript)
 
-- **Python 3.10+**
-- **Pandas** — data manipulation and pipeline
-- **NumPy** — calculations
-- **Jupyter Notebook** — interactive analysis and documentation
-- **Power BI** — original dashboard (see `docs/`)
+A self-contained, browser-based analytics dashboard with no backend,
+no server, and no paid tool dependency.
+
+**How it works:**
+
+- User uploads `cru_aggregated.csv` or `.xlsx` directly in the browser
+- SheetJS parses the file entirely client-side — no network request needed
+- Select a **Police Unit** and **Year** → dashboard updates instantly
+- All filtering, aggregation, and chart rendering happens in-memory
+
+**Dashboard features:**
+
+| Feature | Description |
+|---|---|
+| Grand Total Banner | Dataset-wide totals — all units, all years at a glance |
+| KPI Cards | Total Cases, Pending Cases, Solved Cases, Pending Rate |
+| Top 8 Act Types Chart | Horizontal bar chart of highest volume crime types |
+| Year-wise Trend Line | Case volume trend for selected station across all years |
+| All Units Comparison | Top 15 stations ranked by case volume for selected year |
+| Act Type Breakdown Table | Per-act totals with High / Medium / Low pending status pill |
 
 ---
 
-## 👩‍💻 Author
+## Data Quality Issues Fixed
 
-**Priyanka Lenka**  
-Data Analyst — Training Project  
-[GitHub](https://github.com/PRIYANKALENKA07)
+| # | Issue | Action Taken |
+|---|---|---|
+| 1 | 71,278 duplicate FIR rows in Crime table | Deduplicated on composite Key |
+| 2 | Multiple act sections per FIR inflating counts | Took primary act per FIR only |
+| 3 | Inconsistent act names (`&` vs `and`, double spaces) | Standardized using `.replace()` and `.str.strip()` |
+| 4 | 1,814 FIRs with no act record | Filled as `'Unknown'` |
+| 5 | BOM characters in CSV column names | Stripped during file parsing in dashboard |
 
 ---
 
-*This project is part of a structured learning program in data analytics and predictive modeling.*
+## Why Not Power BI?
+
+| | Power BI | CRU-IAS |
+|---|---|---|
+| Cost | Paid license required | Free — runs in any browser |
+| Data prep | Manual every time | Automated Python pipeline |
+| Portability | Requires Power BI Desktop | Single HTML file, runs anywhere |
+| Customization | Limited to built-in visuals | Fully custom charts and logic |
+| Offline use | Requires account | Works completely offline |
+
+---
+
+## What's Next
+
+- [ ] Monthly trend line chart per station
+- [ ] Pending percentage gauge visual
+- [ ] District-level rollup view
+- [ ] Top 5 backlog stations view
+- [ ] Predictive model — forecast crime volume by station and month
+- [ ] Automated pipeline scheduling
+
+---
+
+## Project Journey
+
+| Phase | What was built | Time |
+|---|---|---|
+| Training Project | Power BI dashboard + 2 months of detailed documentation | 2024 |
+| CRU-IAS v1 | Python data pipeline + HTML dashboard + full technical documentation | 2025 |
+
+---
+
+## Author
+
+**Priyanka Lenka**
+📧 priyankalenkabbs@gmail.com
+🗓️ 2025
+
+> *This project uses dummy data modeled after Karnataka Government FIR
+> records and was built for learning and portfolio purposes.*
