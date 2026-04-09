@@ -193,6 +193,7 @@ no server, and no paid tool dependency.
 | Training Project | Power BI dashboard + 2 months of detailed documentation | Aug 2025 |
 | CRU-IAS v1 | Python data pipeline + HTML dashboard + full technical documentation | Feb 2025 |
 
+![Overview of the system ](https://github.com/PRIYANKALENKA07/CRU-IAS/blob/main/Overview/System%20Overview.png)
 ---
 
 ## Author
@@ -200,7 +201,7 @@ no server, and no paid tool dependency.
 **Priyanka Lenka**
 📧 priyankalenkabbs@gmail.com
 🗓️ 2025
-![Overview of the system ](https://github.com/PRIYANKALENKA07/CRU-IAS/blob/main/Overview/System%20Overview.png)
+
 
 > *This project uses dummy data modeled 
 > records and was built for learning and portfolio purposes.*
