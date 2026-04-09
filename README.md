@@ -198,5 +198,5 @@ no server, and no paid tool dependency.
 📧 priyankalenkabbs@gmail.com
 🗓️ 2025
 
-> *This project uses dummy data modeled after Karnataka Government FIR
+> *This project uses dummy data modeled 
 > records and was built for learning and portfolio purposes.*
