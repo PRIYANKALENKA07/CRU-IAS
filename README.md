@@ -101,7 +101,7 @@ CRU-IAS/
 ```
 ## Power BI Dashboard File
 
-📥 [Download Power BI File (.pbix)](paste-your-google-drive-link-here)
+📥 [Download Power BI File (.pbix)](https://drive.google.com/file/d/1C4Kw6QRmIPvkzhje-ipfluFQ2sBmQCIh/view?usp=drive_link)
 
 ## Phase 1 — Data Pipeline (Python + Pandas)
 
