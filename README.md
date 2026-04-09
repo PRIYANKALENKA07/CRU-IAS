@@ -1,6 +1,6 @@
 # CRU-IAS — Crime Response Unit Intelligence & Analytics System
 
-> An end-to-end crime data intelligence system built on FIR-level data —
+> An end-to-end crime data intelligence system built on FIR-level data 
 > covering data pipeline, analytics, and an interactive browser-based dashboard.
 
 ---
