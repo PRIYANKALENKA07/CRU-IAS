@@ -84,7 +84,7 @@ Crime, Dispose, Act_Section, Accused, Chargesheet, PS_Unit, Victim
 ---
 
 ## Project Structure
-CRU-IAS/
+CRU-IAS
 ```plaintext
 CRU-IAS/
 │
