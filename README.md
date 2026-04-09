@@ -85,6 +85,8 @@ Crime, Dispose, Act_Section, Accused, Chargesheet, PS_Unit, Victim
 
 ## Project Structure
 CRU-IAS/
+```plaintext
+CRU-IAS/
 │
 ├── notebooks/
 │   └── 01_data_pipeline.ipynb    ← Full pipeline: clean, join, aggregate
@@ -96,7 +98,7 @@ CRU-IAS/
 │   └── index.html                ← Self-contained analytics dashboard
 │
 └── README.md
----
+```
 
 ## Phase 1 — Data Pipeline (Python + Pandas)
 
